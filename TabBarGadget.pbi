@@ -65,7 +65,7 @@ EndEnumeration
 
 ; Ereignisse von TabBarGadgetEvent
 Enumeration #PB_EventType_FirstCustomValue
-  #TabBarGadget_EventType_Pushed 
+  #TabBarGadget_EventType_Pushed
   #TabBarGadget_EventType_Updated      ; Das Gadget hat sich aktualisiert (intern)
   #TabBarGadget_EventType_Change       ; Der aktive Tab wurde geändert
   #TabBarGadget_EventType_Resize       ; Die größe der Leiste hat sich geändert
@@ -141,14 +141,14 @@ Structure TabBarGadgetItemColor
   Background.i  ; Hintergrundfarbe
 EndStructure
 
-; Lage und Größe einer Registerkarte 
+; Lage und Größe einer Registerkarte
 Structure TabBarGadgetItemLayout
   X.i         ; X-Position
   Y.i         ; Y-Position
   Width.i     ; (innere) Breite
   Height.i    ; (innere) Höhe
   PaddingX.i  ; Vergrößerung (z.B. bei aktiver Registerkarte)
-  PaddingY.i  ; 
+  PaddingY.i  ;
   CrossX.i    ; Position des Schließen-X
   CrossY.i    ;
   TextX.i     ; Textposition
@@ -280,18 +280,18 @@ Structure TabBarGadgetInclude
   CheckBoxSize.i
   ImageSize.i
   ArrowSize.i                     ; Größe des Navigationspfeils
-  ArrowWidth.i                    ; 
+  ArrowWidth.i                    ;
   ArrowHeight.i                   ;
   Radius.i                        ; Radius der Abrundung der Karte
   MinTabLength.i                  ; Mimimale Länge einer Karte
   MaxTabLength.i                  ; Maximale Länge einer Karte
   TabTextAlignment.i
-  VerticalTextBugFix.f            
+  VerticalTextBugFix.f
   NormalTabLength.i               ; [für später]
   FadeOut.i                       ; Länge der Farbausblendung bei einer Navigation
   WheelDirection.i                ; Scrollrichtung bei Mausradbewegung
   RowDirection.i                  ; Reihenfolge der Zeilen
-  EnableDoubleClickForNewTab.i    ; Doppelklick ins "Leere" erzeigt ein Ereignis 
+  EnableDoubleClickForNewTab.i    ; Doppelklick ins "Leere" erzeigt ein Ereignis
   EnableMiddleClickForCloseTab.i  ; Mittelklick auf eine Karte erzeigt ein Ereignis
   Timer.TabBarGadget_Timer        ; Timer für das kontinuierliche Scrollen
 EndStructure
@@ -388,7 +388,7 @@ Procedure.i TabBarGadget_ItemID(*TabBarGadget.TabBarGadget, Position.i) ; Code O
         ProcedureReturn @\NewTabItem
       Case #TabBarGadgetItem_None
         ProcedureReturn #Null
-      Default 
+      Default
         If Position >= 0 And Position < ListSize(\Item())
           ProcedureReturn SelectElement(\Item(), Position)
         ElseIf Position >= ListSize(\Item())
@@ -426,7 +426,7 @@ Procedure TabBarGadget_SelectItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadget
   If *TabBarGadget\Attributes & #TabBarGadget_MultiSelect = #False
     ForEach *TabBarGadget\Item()
       *TabBarGadget\Item()\Selected = #False
-    Next 
+    Next
   EndIf
   If *Item
     *Item\Selected = #True
@@ -515,17 +515,17 @@ Procedure.i TabBarGadget_ColorPlus(Color.i, Plus.i) ; Code OK
     Color + Plus&$FF
   Else
     Color | $FF
-  EndIf 
+  EndIf
   If Color&$FF00 + Plus&$FF00 < $FF00
     Color + Plus&$FF00
   Else
     Color | $FF00
-  EndIf 
+  EndIf
   If Color&$FF0000 + Plus&$FF0000 < $FF0000
     Color + Plus&$FF0000
   Else
     Color | $FF0000
-  EndIf 
+  EndIf
   
   ProcedureReturn Color
   
@@ -540,17 +540,17 @@ Procedure.i TabBarGadget_ColorMinus(Color.i, Minus.i) ; Code OK
     Color - Minus&$FF
   Else
     Color & $FFFFFF00
-  EndIf 
+  EndIf
   If Color&$FF00 - Minus&$FF00 > 0
     Color - Minus&$FF00
   Else
     Color & $FFFF00FF
-  EndIf 
+  EndIf
   If Color&$FF0000 - Minus&$FF0000 > 0
     Color - Minus&$FF0000
   Else
     Color & $FF00FFFF
-  EndIf 
+  EndIf
   
   ProcedureReturn Color
   
@@ -857,7 +857,7 @@ EndProcedure
 
 
 
-; Rotiert das Image abhängig von der Leistenausrichtung 
+; Rotiert das Image abhängig von der Leistenausrichtung
 Procedure TabBarGadget_RotateImage(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetItem) ; Code OK
   
   Protected LastX.i = ImageWidth(*Item\Image)-1
@@ -1029,19 +1029,19 @@ Procedure TabBarGadget_ItemLayout(*TabBarGadget.TabBarGadget, *Item.TabBarGadget
       EndIf
       If *Item\Selected
         If *TabBarGadget\Attributes & #TabBarGadget_MirroredTabs XOr *TabBarGadget\Attributes & #TabBarGadget_ReverseOrdering
-          If PreviousSelected = #False 
+          If PreviousSelected = #False
             *Item\Layout\Y - \Margin/2
             *Item\Layout\Height + \Margin/2
           EndIf
-          If NextSelected = #False 
+          If NextSelected = #False
             *Item\Layout\Height + \Margin/2
           EndIf
         Else
-          If NextSelected = #False 
+          If NextSelected = #False
             *Item\Layout\Y - \Margin/2
             *Item\Layout\Height + \Margin/2
           EndIf
-          If PreviousSelected = #False 
+          If PreviousSelected = #False
             *Item\Layout\Height + \Margin/2
           EndIf
         EndIf
@@ -1097,19 +1097,19 @@ Procedure TabBarGadget_ItemLayout(*TabBarGadget.TabBarGadget, *Item.TabBarGadget
       EndIf
       If *Item\Selected
         If *TabBarGadget\Attributes & #TabBarGadget_ReverseOrdering
-          If NextSelected = #False 
+          If NextSelected = #False
             *Item\Layout\X - \Margin/2
             *Item\Layout\Width + \Margin/2
           EndIf
-          If PreviousSelected = #False 
+          If PreviousSelected = #False
             *Item\Layout\Width + \Margin/2
           EndIf
         Else
-          If PreviousSelected = #False 
+          If PreviousSelected = #False
             *Item\Layout\X - \Margin/2
             *Item\Layout\Width + \Margin/2
           EndIf
-          If NextSelected = #False 
+          If NextSelected = #False
             *Item\Layout\Width + \Margin/2
           EndIf
         EndIf
@@ -1685,7 +1685,7 @@ Procedure TabBarGadget_Examine(*TabBarGadget.TabBarGadget)
           Case #PB_EventType_LeftButtonDown
             \LockedArrow = #TabBarGadget_PopupButton
           Case #PB_EventType_LeftButtonUp
-            If \LockedArrow = \HoverArrow 
+            If \LockedArrow = \HoverArrow
               PostEvent(#PB_Event_Gadget, \Window, \Number, #TabBarGadget_EventType_PopupButton, -1)
             EndIf
         EndSelect
@@ -1745,12 +1745,12 @@ Procedure TabBarGadget_Examine(*TabBarGadget.TabBarGadget)
       Select EventType()
         Case #PB_EventType_LeftButtonDown
           \LockedItem = \HoverItem
-          If \LockedItem = \NewTabItem 
+          If \LockedItem = \NewTabItem
             PostEvent(#PB_Event_Gadget, \Window, \Number, #TabBarGadget_EventType_NewItem, \EventTab)
           ElseIf \LockedClose = #False And \LockedCheck = #False
             If \HoverItem\Disabled = #False
               If \Attributes & #TabBarGadget_MultiSelect And GetGadgetAttribute(\Number, #PB_Canvas_Modifiers) & #PB_Canvas_Control
-                If \HoverItem\Selected 
+                If \HoverItem\Selected
                   TabBarGadget_UnselectItem(*TabBarGadget, \HoverItem)
                 Else
                   TabBarGadget_SelectItem(*TabBarGadget, \HoverItem)
@@ -1759,7 +1759,7 @@ Procedure TabBarGadget_Examine(*TabBarGadget.TabBarGadget)
               Else
                 ForEach \Item()
                   \Item()\Selected = #False
-                Next 
+                Next
                 If \SelectedItem <> \HoverItem
                   PostEvent(#PB_Event_Gadget, \Window, \Number, #TabBarGadget_EventType_Change, \EventTab)
                 EndIf
@@ -1881,7 +1881,7 @@ Procedure TabBarGadget_Examine(*TabBarGadget.TabBarGadget)
           If \MoveItem\Length < \Item()\Length
             MinLength = \MoveItem\Length
           Else
-            MinLength = \Item()\Length 
+            MinLength = \Item()\Length
           EndIf
           If MousePosition < \Item()\Position + \MaxLength*\Item()\Row + MinLength
             SwapElements(\Item(), @\Item(), \MoveItem)
@@ -2213,7 +2213,7 @@ Procedure TabBarGadget_Update(*TabBarGadget.TabBarGadget)
         Factor = Pow(Difference/24, 2)
         Position = \MoveItem\Position*(1-Factor) + (MousePosition-\MoveItem\Length/2)*Factor
       EndIf
-      If \Attributes & #TabBarGadget_PreviousArrow = #Null 
+      If \Attributes & #TabBarGadget_PreviousArrow = #Null
         If Position < TabBarGadgetInclude\Margin
           Position = TabBarGadgetInclude\Margin
         EndIf
@@ -2406,7 +2406,7 @@ Procedure TabBarGadget_Draw(*TabBarGadget.TabBarGadget)
     EndIf
     
     ; "Neu"-Registerkarten (wenn Navigation)
-    If \Attributes & #TabBarGadget_NewTab And \Attributes & #TabBarGadget_NextArrow 
+    If \Attributes & #TabBarGadget_NewTab And \Attributes & #TabBarGadget_NextArrow
       TabBarGadget_DrawItem(*TabBarGadget, \NewTabItem)
     EndIf
     
@@ -3122,7 +3122,7 @@ Procedure GetTabBarGadgetItemPosition(Gadget.i, Tab.i) ; Code OK, Hilfe OK
         EndIf
       Case #TabBarGadgetItem_NewTab, #TabBarGadgetItem_None
         ProcedureReturn Tab
-      Default 
+      Default
         If Tab >= 0 And Tab < ListSize(\Item())
           ProcedureReturn Tab
         ElseIf Tab >= ListSize(\Item())

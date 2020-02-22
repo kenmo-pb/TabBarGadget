@@ -1,9 +1,9 @@
-;|-------------------------------------------------------------------------------------------------
+ï»¿;|-------------------------------------------------------------------------------------------------
 ;|
 ;|  Title            : TabBarGadget
 ;|  Version          : 1.5 Beta 2a (2019-03-25)
 ;|  Copyright        : UnionBytes
-;|                     (Martin Guttmann alias STARGÅTE)
+;|                     (Martin Guttmann alias STARGÃ…TE)
 ;|  PureBasic        : 5.20+
 ;|  String Format    : Ascii, Unicode
 ;|  Operating System : Windows, Linux, MacOS
@@ -31,13 +31,13 @@ EnableExplicit
 
 
 
-;|¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+;|Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
 ;-  1. Constants / Konstanten
 ;|__________________________________________________________________________________________________
 
 
 
-; Attribute für das TabBarGadget
+; Attribute fÃ¼r das TabBarGadget
 Enumeration
 	#TabBarGadget_None                 = 0<<0
 	#TabBarGadget_CloseButton          = 1<<0
@@ -57,7 +57,7 @@ Enumeration
 	#TabBarGadget_ImageSize            = 1<<23
 	#TabBarGadget_TabTextAlignment     = 1<<24
 	#TabBarGadget_ScrollPosition       = 1<<25
-	#TabBarGadget_NormalTabLength      = 1<<26 ; für Später
+	#TabBarGadget_NormalTabLength      = 1<<26 ; fÃ¼r SpÃ¤ter
 	#TabBarGadget_MaxTabLength         = 1<<27
 	#TabBarGadget_MinTabLength         = 1<<28
 	#TabBarGadget_TabRounding          = 1<<29
@@ -67,20 +67,20 @@ EndEnumeration
 Enumeration #PB_EventType_FirstCustomValue
 	#TabBarGadget_EventType_Pushed 
 	#TabBarGadget_EventType_Updated      ; Das Gadget hat sich aktualisiert (intern)
-	#TabBarGadget_EventType_Change       ; Der aktive Tab wurde geändert
-	#TabBarGadget_EventType_Resize       ; Die größe der Leiste hat sich geändert
+	#TabBarGadget_EventType_Change       ; Der aktive Tab wurde geÃ¤ndert
+	#TabBarGadget_EventType_Resize       ; Die grÃ¶ÃŸe der Leiste hat sich geÃ¤ndert
 	#TabBarGadget_EventType_NewItem      ; ein neuer Tab wird angefordert
 	#TabBarGadget_EventType_CloseItem    ; ein Tab soll geschlossen werden
 	#TabBarGadget_EventType_SwapItem     ; der aktive Tab wurde verschoben
-	#TabBarGadget_EventType_EditItem     ; der Text einer Karte wurde geändert
-	#TabBarGadget_EventType_CheckBox     ; der Status der Checkbox hat sich geändert
-	#TabBarGadget_EventType_PopupButton  ; der Popup-Button wurde gedrückt
+	#TabBarGadget_EventType_EditItem     ; der Text einer Karte wurde geÃ¤ndert
+	#TabBarGadget_EventType_CheckBox     ; der Status der Checkbox hat sich geÃ¤ndert
+	#TabBarGadget_EventType_PopupButton  ; der Popup-Button wurde gedrÃ¼ckt
 EndEnumeration
 
 
 
 
-; Positionskonstanten für "Item"-Befehle
+; Positionskonstanten fÃ¼r "Item"-Befehle
 Enumeration
 	#TabBarGadgetItem_None        = -1
 	#TabBarGadgetItem_NewTab      = -2
@@ -117,13 +117,13 @@ EndEnumeration
 
 
 
-;|¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+;|Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
 ;-  2. Structures / Strukturen
 ;|__________________________________________________________________________________________________
 
 
 
-; Sortierter Eintrag für die Textkürzung
+; Sortierter Eintrag fÃ¼r die TextkÃ¼rzung
 Structure TabBarGadgetSortedItem
 	*Item.TabBarGadgetItem  ; Registerkarte
 	Characters.i            ; Anzahl der Buchstaben
@@ -131,25 +131,25 @@ EndStructure
 
 ; Aktuelle Parameter eine Kartenzeile
 Structure TabBarGadgetRow
-	Length.i  ; Aktuelle Länge einer Zeile
+	Length.i  ; Aktuelle LÃ¤nge einer Zeile
 	Items.i   ; Aktuelle Anzahl der Tabs
 EndStructure
 
-; Farben für einen Eintrag
+; Farben fÃ¼r einen Eintrag
 Structure TabBarGadgetItemColor
 	Text.i        ; Textfarbe
 	Background.i  ; Hintergrundfarbe
 EndStructure
 
-; Lage und Größe einer Registerkarte 
+; Lage und GrÃ¶ÃŸe einer Registerkarte 
 Structure TabBarGadgetItemLayout
 	X.i         ; X-Position
 	Y.i         ; Y-Position
 	Width.i     ; (innere) Breite
-	Height.i    ; (innere) Höhe
-	PaddingX.i  ; Vergrößerung (z.B. bei aktiver Registerkarte)
+	Height.i    ; (innere) HÃ¶he
+	PaddingX.i  ; VergrÃ¶ÃŸerung (z.B. bei aktiver Registerkarte)
 	PaddingY.i  ; 
-	CrossX.i    ; Position des Schließen-X
+	CrossX.i    ; Position des SchlieÃŸen-X
 	CrossY.i    ;
 	TextX.i     ; Textposition
 	TextY.i     ;
@@ -162,32 +162,32 @@ EndStructure
 ; Registerkarte
 Structure TabBarGadgetItem
 	Text.s                                  ; Text
-	ShortText.s                             ; verkürzter Text
+	ShortText.s                             ; verkÃ¼rzter Text
 	Color.TabBarGadgetItemColor             ; Farbattribute
 	Image.i                                 ; Bild (Kopie vom Original)
 	DrawedImage.i                           ; Bild (Kopie ggf. rotiert)
 	DataValue.i                             ; Benutzer-Daten-Wert
 	Attributes.i                            ; Attribute
 	Disabled.i                              ; Deaktiviert
-	Selected.i                              ; Aktuell ausgewählt
+	Selected.i                              ; Aktuell ausgewÃ¤hlt
 	Checked.i                               ; Abgehakt
 	ToolTip.s                               ; ToolTop
-	Length.i                                ; Länge in Pixel (TEMP)
+	Length.i                                ; LÃ¤nge in Pixel (TEMP)
 	Row.i                                   ; Zeile (TEMP)
 	Position.i                              ; Position (TEMP)
 	Visible.i                               ; Sichtbar und wird gezeichnet (TEMP)
 	Face.i                                  ; Aussehen (TEMP)
 	Layout.TabBarGadgetItemLayout           ; Layout der Karte (TEMP)
-	*PreviousSelectedItem.TabBarGadgetItem  ; Zuvor ausgewählter Tab
+	*PreviousSelectedItem.TabBarGadgetItem  ; Zuvor ausgewÃ¤hlter Tab
 EndStructure
 
 ; Tooltips
 Structure TabBarGadgetToolTip
 	*Current                         ; Aktuelle ToolTip-Adresse
 	*Old                             ; Alte ToolTip-Adresse
-	ItemText.s                       ; Text für die Registerkarte
-	NewText.s                        ; Text für die "Neu"-Registerkarte
-	CloseText.s                      ; Text für den Schließen-Button
+	ItemText.s                       ; Text fÃ¼r die Registerkarte
+	NewText.s                        ; Text fÃ¼r die "Neu"-Registerkarte
+	CloseText.s                      ; Text fÃ¼r den SchlieÃŸen-Button
 EndStructure
 
 ; Editierte Karte
@@ -195,19 +195,19 @@ Structure TabBarGadgetEditor
 	*Item.TabBarGadgetItem  ; Zu Bearbeitende Karte
 	OldText.s               ; Alter Text vor dem Bearbeiten
 	Cursor.i                ; Cursor-Position
-	Selection.i             ; Textmarkierungslänge
-	Selectable.i            ; Ob die Mausbewegung zu einer Textmarkierung führt
+	Selection.i             ; TextmarkierungslÃ¤nge
+	Selectable.i            ; Ob die Mausbewegung zu einer Textmarkierung fÃ¼hrt
 EndStructure
 
 ; Layout der Leiste
 Structure TabBarGadgetLayout
-	PreviousButtonX.i  ; Position des "zurück" Navigationspfeil
+	PreviousButtonX.i  ; Position des "zurÃ¼ck" Navigationspfeil
 	PreviousButtonY.i
 	NextButtonX.i  ; Position des "vor" Navigationspfeil
 	NextButtonY.i
 	PopupButtonX.i ; Position des Popup-Pfeils
 	PopupButtonY.i
-	ButtonWidth.i  ; Größe der Buttons
+	ButtonWidth.i  ; GrÃ¶ÃŸe der Buttons
 	ButtonHeight.i
 	ButtonSize.i
 EndStructure
@@ -221,16 +221,16 @@ Structure TabBarGadget
 	Attributes.i                      ; Attribute
 	List		Item.TabBarGadgetItem()   ; Registerkarten
 	NewTabItem.TabBarGadgetItem       ; "Neu"-Registerkarte
-	*SelectedItem.TabBarGadgetItem    ; ausgewählte Registerkarte
+	*SelectedItem.TabBarGadgetItem    ; ausgewÃ¤hlte Registerkarte
 	*MoveItem.TabBarGadgetItem        ; bewegte Registerkarte
 	*HoverItem.TabBarGadgetItem       ; hervorgehobene Registerkarte
-	HoverClose.i                      ; Schließenbutton hervorgehoben
+	HoverClose.i                      ; SchlieÃŸenbutton hervorgehoben
 	HoverCheck.i                      ; Checkbox hervorgehoben
 	HoverArrow.i                      ; Navigationbutton hervorgehoben
 	*ReadyToMoveItem.TabBarGadgetItem ; Registerkarte die bereit ist bewegt zu werden
-	*LockedItem.TabBarGadgetItem      ; Registerkarte angeschlagen wurde (für Klicks)
-	LockedClose.i                     ; Schließenbutton angeschlagen
-	LockedCheck.i                     ; Schließenbutton angeschlagen
+	*LockedItem.TabBarGadgetItem      ; Registerkarte angeschlagen wurde (fÃ¼r Klicks)
+	LockedClose.i                     ; SchlieÃŸenbutton angeschlagen
+	LockedCheck.i                     ; SchlieÃŸenbutton angeschlagen
 	LockedArrow.i                     ; Navigationsbutton angeschlagen
 	SaveMouseX.i                      ; gespeicherte Mausposition
 	SaveMouseY.i                      ; gespeicherte Mausposition
@@ -240,67 +240,67 @@ Structure TabBarGadget
 	EventTab.i                        ; Registerkartenposition auf der das letzte Ereignis war
 	Shift.i                           ; Verschiebung der Leiste
 	LastShift.i                       ; Maximale sinnvolle Verschiebung
-	FocusingSelectedTab.i             ; muss die ausgewählte Registerkarte fokussiert werden
-	MaxLength.i                       ; maximal nutzbare Länge für Karten
-	Length.i                          ; Länge aller sichtbaren Karten
+	FocusingSelectedTab.i             ; muss die ausgewÃ¤hlte Registerkarte fokussiert werden
+	MaxLength.i                       ; maximal nutzbare LÃ¤nge fÃ¼r Karten
+	Length.i                          ; LÃ¤nge aller sichtbaren Karten
 	Radius.i                          ; Radius der Kartenrundung
-	MinTabLength.i                    ; minimale Länge einer Karte
-	MaxTabLength.i                    ; maximale Länge einer Karte
-	NormalTabLength.i                 ; normale Länge einer Karte
+	MinTabLength.i                    ; minimale LÃ¤nge einer Karte
+	MaxTabLength.i                    ; maximale LÃ¤nge einer Karte
+	NormalTabLength.i                 ; normale LÃ¤nge einer Karte
 	TabTextAlignment.i                ; Textausrichtung
 	ToolTip.TabBarGadgetToolTip       ; ToolTip
-	TabSize.i                         ; Größer einer Registerkarte
+	TabSize.i                         ; GrÃ¶ÃŸer einer Registerkarte
 	Rows.i                            ; Anzahl der Zeilen
-	Resized.i                         ; Das Gadget muss vergrößert werden
-	Editor.TabBarGadgetEditor         ; Editor für eine Karte
+	Resized.i                         ; Das Gadget muss vergrÃ¶ÃŸert werden
+	Editor.TabBarGadgetEditor         ; Editor fÃ¼r eine Karte
 	Layout.TabBarGadgetLayout         ; Layout der Leiste
 	UpdatePosted.i                    ; Nach einem PostEvent #True
 EndStructure
 
-; Timer für das kontinuierliche Scrollen
+; Timer fÃ¼r das kontinuierliche Scrollen
 Structure TabBarGadget_Timer
 	*TabBarGadget.TabBarGadget  ; TabBarGadget-ID
 	Type.i                      ; Modus (Scrollen)
 	Mutex.i                     ; Mutex zur Sicherung
 EndStructure
 
-; Include für das Registerkartenleisten-Gadget
+; Include fÃ¼r das Registerkartenleisten-Gadget
 Structure TabBarGadgetInclude
 	TabBarColor.i                   ; Hintergrundfarbe des Gadgets
 	FaceColor.i                     ; Hintergrundfarbe einer Karte
-	HoverColorPlus.i                ; Farbänderung für den Hover-Effekt
-	ActivColorPlus.i                ; Farbänderung für aktuell ausgewählte Karten
+	HoverColorPlus.i                ; FarbÃ¤nderung fÃ¼r den Hover-Effekt
+	ActivColorPlus.i                ; FarbÃ¤nderung fÃ¼r aktuell ausgewÃ¤hlte Karten
 	BorderColor.i                   ; Rahmenfarbe
 	TextColor.i                     ; Textfarbe
 	PaddingX.i                      ; Innenabstand (Text zu Rahmen)
 	PaddingY.i                      ; Innenabstand (Text zu Rahmen)
-	Margin.i                        ; Außenabstand (Rahmen zu Gadget-Rand)
+	Margin.i                        ; AuÃŸenabstand (Rahmen zu Gadget-Rand)
 	ImageSpace.i                    ; Freiraum zwischen Bild und Text
-	CloseButtonSize.i               ; Größe des Schließenkreuzes
+	CloseButtonSize.i               ; GrÃ¶ÃŸe des SchlieÃŸenkreuzes
 	CheckBoxSize.i
 	ImageSize.i
-	ArrowSize.i                     ; Größe des Navigationspfeils
+	ArrowSize.i                     ; GrÃ¶ÃŸe des Navigationspfeils
 	ArrowWidth.i                    ; 
 	ArrowHeight.i                   ;
 	Radius.i                        ; Radius der Abrundung der Karte
-	MinTabLength.i                  ; Mimimale Länge einer Karte
-	MaxTabLength.i                  ; Maximale Länge einer Karte
+	MinTabLength.i                  ; Mimimale LÃ¤nge einer Karte
+	MaxTabLength.i                  ; Maximale LÃ¤nge einer Karte
 	TabTextAlignment.i
 	VerticalTextBugFix.f            
-	NormalTabLength.i               ; [für später]
-	FadeOut.i                       ; Länge der Farbausblendung bei einer Navigation
+	NormalTabLength.i               ; [fÃ¼r spÃ¤ter]
+	FadeOut.i                       ; LÃ¤nge der Farbausblendung bei einer Navigation
 	WheelDirection.i                ; Scrollrichtung bei Mausradbewegung
 	RowDirection.i                  ; Reihenfolge der Zeilen
 	EnableDoubleClickForNewTab.i    ; Doppelklick ins "Leere" erzeigt ein Ereignis 
 	EnableMiddleClickForCloseTab.i  ; Mittelklick auf eine Karte erzeigt ein Ereignis
-	Timer.TabBarGadget_Timer        ; Timer für das kontinuierliche Scrollen
+	Timer.TabBarGadget_Timer        ; Timer fÃ¼r das kontinuierliche Scrollen
 EndStructure
 
 
 
 
 
-;|¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+;|Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
 ;-  3. Initializations / Initialisierungen
 ;|__________________________________________________________________________________________________
 
@@ -309,7 +309,7 @@ EndStructure
 Global TabBarGadgetInclude.TabBarGadgetInclude
 Declare TabBarGadget_Timer(Null.i)
 
-; Diese Werte können sowohl im Include, als auch im Hauptcode später über TabBarGadgetInclude\Feld geändert werden.
+; Diese Werte kÃ¶nnen sowohl im Include, als auch im Hauptcode spÃ¤ter Ã¼ber TabBarGadgetInclude\Feld geÃ¤ndert werden.
 With TabBarGadgetInclude
 	CompilerSelect #PB_Compiler_OS
 		CompilerCase #PB_OS_Windows
@@ -357,18 +357,18 @@ EndWith
 
 
 
-;|¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+;|Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
 ;-  4. Procedures & Macros / Prozeduren & Makros
 ;|__________________________________________________________________________________________________
 
 
 
 ;-  4.1 Private procedures for internal calculations ! Not for use !
-;¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+;Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
 
 
 
-; Gitb die Adresse (ID) der Registerkarte zurück.
+; Gitb die Adresse (ID) der Registerkarte zurÃ¼ck.
 ;   Position kann eine Konstante, Position oder ID sein.
 Procedure.i TabBarGadget_ItemID(*TabBarGadget.TabBarGadget, Position.i) ; Code OK
 	
@@ -420,7 +420,7 @@ EndProcedure
 
 
 
-; Wählt die angegebene Karte aus und aktualisiert die Select-Hierarchie
+; WÃ¤hlt die angegebene Karte aus und aktualisiert die Select-Hierarchie
 Procedure TabBarGadget_SelectItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetItem) ; Code OK
 	
 	If *TabBarGadget\Attributes & #TabBarGadget_MultiSelect = #False
@@ -441,7 +441,7 @@ EndProcedure
 
 
 
-; Wählt die angegebene Karte ab und aktualisiert die Select-Hierarchie
+; WÃ¤hlt die angegebene Karte ab und aktualisiert die Select-Hierarchie
 Procedure TabBarGadget_UnselectItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetItem) ; Code OK
 	
 	*Item\Selected = #False
@@ -454,7 +454,7 @@ Procedure TabBarGadget_UnselectItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadg
 			EndIf
 		EndIf
 	Next
-	If *TabBarGadget\SelectedItem = *Item ; Auswahl muss geändert werden
+	If *TabBarGadget\SelectedItem = *Item ; Auswahl muss geÃ¤ndert werden
 		*TabBarGadget\SelectedItem = *Item\PreviousSelectedItem
 		If *TabBarGadget\SelectedItem
 			*TabBarGadget\SelectedItem\Selected = #True
@@ -490,8 +490,8 @@ EndProcedure
 
 
 
-; Gibt #True zurück, wenn die Maus innerhalb des Rechtecks ist.
-;   Width und Height können auch negativ sein.
+; Gibt #True zurÃ¼ck, wenn die Maus innerhalb des Rechtecks ist.
+;   Width und Height kÃ¶nnen auch negativ sein.
 Procedure.i TabBarGadget_MouseIn(*TabBarGadget.TabBarGadget, X.i, Y.i, Width.i, Height.i) ; Code OK
 	
 	With *TabBarGadget
@@ -558,7 +558,7 @@ EndProcedure
 
 
 
-; Zeichnet ein (Schließen-)Kreuz
+; Zeichnet ein (SchlieÃŸen-)Kreuz
 Procedure TabBarGadget_DrawCross(X.i, Y.i, Size.i, Color.i) ; Code OK
 	
 	Protected Alpha.i = Alpha(Color)/4
@@ -722,7 +722,7 @@ EndProcedure
 
 
 
-; Gibt die Länge der Registerkate zurück.
+; Gibt die LÃ¤nge der Registerkate zurÃ¼ck.
 Procedure.i TabBarGadget_ItemLength(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetItem) ; Code OK
 	
 	Protected TextLength.i = TextWidth(*Item\ShortText)
@@ -730,7 +730,7 @@ Procedure.i TabBarGadget_ItemLength(*TabBarGadget.TabBarGadget, *Item.TabBarGadg
 	Protected Characters.i, VerticalTextBugFix.f = 1.0
 	
 	If *TabBarGadget\Attributes & #TabBarGadget_Vertical
-		TextLength * TabBarGadgetInclude\VerticalTextBugFix ; 5% länger, wegen Ungenaugikeit von TextWidth bei Rotation
+		TextLength * TabBarGadgetInclude\VerticalTextBugFix ; 5% lÃ¤nger, wegen Ungenaugikeit von TextWidth bei Rotation
 		VerticalTextBugFix = TabBarGadgetInclude\VerticalTextBugFix
 	EndIf
 	If *Item\Attributes & #TabBarGadget_CloseButton Or (*Item\Attributes & #TabBarGadget_SelectedCloseButton And *Item\Selected)
@@ -771,7 +771,7 @@ EndProcedure
 
 
 
-; Gibt den maximal zur verfügungstehenden Platz für Registerkarten zurück.
+; Gibt den maximal zur verfÃ¼gungstehenden Platz fÃ¼r Registerkarten zurÃ¼ck.
 Procedure.i TabBarGadget_MaxLength(*TabBarGadget.TabBarGadget, WithNewTab.i=#True) ; Code OK
 	
 	Protected Length.i
@@ -805,7 +805,7 @@ EndProcedure
 
 
 
-; Führt eine Textkürzung durch, bis alle Karte in die Leiste passen.
+; FÃ¼hrt eine TextkÃ¼rzung durch, bis alle Karte in die Leiste passen.
 Procedure.i TabBarGadget_TextCutting(*TabBarGadget.TabBarGadget) ; Code OK
 	
 	Protected NewList SortedItem.TabBarGadgetSortedItem()
@@ -814,7 +814,7 @@ Procedure.i TabBarGadget_TextCutting(*TabBarGadget.TabBarGadget) ; Code OK
 	
 	With *TabBarGadget
 		
-		; Der Textlänge nach (groß -> klein) sortierte Einträge anlegen.
+		; Der TextlÃ¤nge nach (groÃŸ -> klein) sortierte EintrÃ¤ge anlegen.
 		ForEach \Item()
 			\Item()\ShortText      = \Item()\Text
 			\Item()\Length         = TabBarGadget_ItemLength(*TabBarGadget, @\Item())
@@ -831,7 +831,7 @@ Procedure.i TabBarGadget_TextCutting(*TabBarGadget.TabBarGadget) ; Code OK
 			MaxLength + \Item()\Length - 1
 		Next
 		
-		; Textkürzung durchführen, bis alle Karte in die maximale Breite passen.
+		; TextkÃ¼rzung durchfÃ¼hren, bis alle Karte in die maximale Breite passen.
 		While MaxLength > \MaxLength And FirstElement(SortedItem())
 			*SortedItem = @SortedItem()
 			If *SortedItem\Characters > 3 And *SortedItem\Item\Length > \MinTabLength
@@ -857,7 +857,7 @@ EndProcedure
 
 
 
-; Rotiert das Image abhängig von der Leistenausrichtung 
+; Rotiert das Image abhÃ¤ngig von der Leistenausrichtung 
 Procedure TabBarGadget_RotateImage(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetItem) ; Code OK
 	
 	Protected LastX.i = ImageWidth(*Item\Image)-1
@@ -909,7 +909,7 @@ EndProcedure
 
 
 
-; (Er-)setz ein neues Icon für die Karte
+; (Er-)setz ein neues Icon fÃ¼r die Karte
 Procedure TabBarGadget_ReplaceImage(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetItem, NewImageID.i=#Null) ; Code OK
 	
 	If *Item\Image
@@ -1295,7 +1295,7 @@ Procedure TabBarGadget_DrawItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetIt
 				GradientColor(1.0, TabBarGadget_ColorMinus(Color, $FF101010))
 		EndSelect
 		
-; 		; andere ausgewählte Nachbarn
+; 		; andere ausgewÃ¤hlte Nachbarn
 ; 		If *Item <> *TabBarGadget\NewTabItem And *Item\Selected
 ; 			PushListPosition(*TabBarGadget\Item())
 ; 			ChangeCurrentElement(*TabBarGadget\Item(), *Item)
@@ -1394,7 +1394,7 @@ Procedure TabBarGadget_DrawItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetIt
 			DrawingMode(#PB_2DDrawing_AlphaBlend|#PB_2DDrawing_Transparent)
 		EndIf
 		
-		; Schließen-Schaltfläche
+		; SchlieÃŸen-SchaltflÃ¤che
 		If *Item\Attributes & #TabBarGadget_CloseButton Or (*Item\Attributes & #TabBarGadget_SelectedCloseButton And *Item\Selected)
 			If *TabBarGadget\HoverItem = *Item And *TabBarGadget\HoverClose
 				If *TabBarGadget\LockedClose And *TabBarGadget\LockedItem = *Item
@@ -1695,7 +1695,7 @@ Procedure TabBarGadget_Examine(*TabBarGadget.TabBarGadget)
 		; Registerkarten
 		If \HoverItem
 			
-			; Tooltip aktualisieren & Schließenbutton & Checkbox
+			; Tooltip aktualisieren & SchlieÃŸenbutton & Checkbox
 			If \HoverItem\ToolTip
 				\ToolTip\Current = @\HoverItem\ToolTip
 			Else
@@ -2037,7 +2037,7 @@ Procedure TabBarGadget_Update(*TabBarGadget.TabBarGadget)
 			
 			\MaxLength = TabBarGadget_MaxLength(*TabBarGadget)
 			
-			; ggf. Textkürzung
+			; ggf. TextkÃ¼rzung
 			If \Attributes & #TabBarGadget_TextCutting
 				\Length = TabBarGadget_TextCutting(*TabBarGadget)
 				If \Length <= \MaxLength
@@ -2053,7 +2053,7 @@ Procedure TabBarGadget_Update(*TabBarGadget.TabBarGadget)
 				\Length + \Item()\Length-1
 			Next
 			
-			; Navigation nötig ?
+			; Navigation nÃ¶tig ?
 			If \Length > \MaxLength
 				\Attributes | (#TabBarGadget_PreviousArrow | #TabBarGadget_NextArrow)
 				\MaxLength = TabBarGadget_MaxLength(*TabBarGadget)
@@ -2077,7 +2077,7 @@ Procedure TabBarGadget_Update(*TabBarGadget.TabBarGadget)
 				\LastShift = 0
 			EndIf
 			
-			; ggf. aktuell ausgewählte Registerkarte in den sichtbaren Bereich bringen
+			; ggf. aktuell ausgewÃ¤hlte Registerkarte in den sichtbaren Bereich bringen
 			If \FocusingSelectedTab And \SelectedItem
 				ChangeCurrentElement(\Item(), \SelectedItem)
 				If ListIndex(\Item()) <= \Shift
@@ -2141,7 +2141,7 @@ Procedure TabBarGadget_Update(*TabBarGadget.TabBarGadget)
 				Until Not NextElement(\Item())
 			EndIf
 			
-			; nächste Registerkarte
+			; nÃ¤chste Registerkarte
 			If \Attributes & #TabBarGadget_NextArrow And ListIndex(\Item()) <> -1
 				If ListIndex(\Item()) <> ListSize(\Item())-1
 					\Item()\Position = Position + \Length
@@ -2176,7 +2176,7 @@ Procedure TabBarGadget_Update(*TabBarGadget.TabBarGadget)
 			
 		EndIf
 		
-		; Größenänderung des Gadgets
+		; GrÃ¶ÃŸenÃ¤nderung des Gadgets
 		If Rows <> \Rows And (EventType() >= #PB_EventType_FirstCustomValue Or GetGadgetAttribute(\Number, #PB_Canvas_Buttons) & #PB_Canvas_LeftButton = #False)
 			StopDrawing()
 			If \Attributes & #TabBarGadget_Vertical
@@ -2430,7 +2430,7 @@ EndProcedure
 
 
 
-; Dauerschleife für das automatische Scrollen in der Navigation
+; Dauerschleife fÃ¼r das automatische Scrollen in der Navigation
 Procedure TabBarGadget_Timer(Null.i) ; Code OK
 	
 	With TabBarGadgetInclude\Timer
@@ -2470,7 +2470,7 @@ EndProcedure
 
 
 
-; Callback für BindGadgetEvent()
+; Callback fÃ¼r BindGadgetEvent()
 Procedure TabBarGadget_Callback() ; Code OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(EventGadget())
@@ -2517,11 +2517,11 @@ EndProcedure
 
 
 ;-  4.2 Procedures for the TabBarGadget
-;¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+;Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
 
 
 
-; Führt eine Aktualisierung (Neuzeichnung) des Gadgets durch.
+; FÃ¼hrt eine Aktualisierung (Neuzeichnung) des Gadgets durch.
 Procedure UpdateTabBarGadget(Gadget.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2599,7 +2599,7 @@ EndProcedure
 
 
 
-; Fügt eine Registerkarte an die angegebenen Position ein.
+; FÃ¼gt eine Registerkarte an die angegebenen Position ein.
 Procedure.i AddTabBarGadgetItem(Gadget.i, Position.i, Text.s, ImageID.i=#Null, DataValue.i=#Null) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2636,7 +2636,7 @@ EndProcedure
 
 
 
-; Gibt die einmalige ID der angegebenen Registerkarte zurück.
+; Gibt die einmalige ID der angegebenen Registerkarte zurÃ¼ck.
 Procedure.i TabBarGadgetItemID(Gadget.i, Position.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2681,7 +2681,7 @@ EndProcedure
 
 
 
-; Gibt die Anzahl der Registerkarten zurück.
+; Gibt die Anzahl der Registerkarten zurÃ¼ck.
 Procedure.i CountTabBarGadgetItems(Gadget.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2695,11 +2695,11 @@ EndProcedure
 
 
 ;-  4.3 Set- & Get-Prozeduren
-;¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+;Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯
 
 
 
-; Setz einen ToolTip für die Registerkartenleiste (für die Registerkarten, die "Neu"-Registerkarte und den Schließenbutton)
+; Setz einen ToolTip fÃ¼r die Registerkartenleiste (fÃ¼r die Registerkarten, die "Neu"-Registerkarte und den SchlieÃŸenbutton)
 Procedure TabBarGadgetToolTip(Gadget.i, ItemText.s="", NewText.s="", CloseText.s="") ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2712,7 +2712,7 @@ EndProcedure
 
 
 
-; Setz einen ToolTip für die Registerkarte.
+; Setz einen ToolTip fÃ¼r die Registerkarte.
 Procedure TabBarGadgetItemToolTip(Gadget.i, Tab.i, Text.s) ; Code OK, Hilfe OK
 	
 	Protected *Item.TabBarGadgetItem = TabBarGadgetItemID(Gadget, Tab)
@@ -2725,7 +2725,7 @@ EndProcedure
 
 
 
-; Ändert den Wert eines Attributs der Registerkartenleiste.
+; Ã„ndert den Wert eines Attributs der Registerkartenleiste.
 Procedure SetTabBarGadgetAttribute(Gadget.i, Attribute.i, Value.i, Overwrite.i=#True) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2811,7 +2811,7 @@ EndProcedure
 
 
 
-; Gibt den Wert eines Attributs der Registerkartenleiste zurück.
+; Gibt den Wert eines Attributs der Registerkartenleiste zurÃ¼ck.
 Procedure.i GetTabBarGadgetAttribute(Gadget.i, Attribute.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2841,7 +2841,7 @@ EndProcedure
 
 
 
-; Ändert den Daten-Wert der Registerkartenleiste.
+; Ã„ndert den Daten-Wert der Registerkartenleiste.
 Procedure SetTabBarGadgetData(Gadget.i, DataValue.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2852,7 +2852,7 @@ EndProcedure
 
 
 
-; Gibt den Daten-Wert der Registerkartenleiste zurück.
+; Gibt den Daten-Wert der Registerkartenleiste zurÃ¼ck.
 Procedure.i GetTabBarGadgetData(Gadget.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2863,7 +2863,7 @@ EndProcedure
 
 
 
-; Ändert die zu nutzende Schrift.
+; Ã„ndert die zu nutzende Schrift.
 Procedure SetTabBarGadgetFont(Gadget.i, FontID.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2880,7 +2880,7 @@ EndProcedure
 
 
 
-; Ändert den Status der Registerkartenleiste.
+; Ã„ndert den Status der Registerkartenleiste.
 Procedure SetTabBarGadgetState(Gadget.i, State.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2906,7 +2906,7 @@ EndProcedure
 
 
 
-; Gibt den Status der Registerkartenleiste zurück.
+; Gibt den Status der Registerkartenleiste zurÃ¼ck.
 Procedure.i GetTabBarGadgetState(Gadget.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2939,7 +2939,7 @@ EndProcedure
 
 
 
-; Gibt den Text der aktuell ausgewählten Registerkarte zurück.
+; Gibt den Text der aktuell ausgewÃ¤hlten Registerkarte zurÃ¼ck.
 Procedure.s GetTabBarGadgetText(Gadget.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2952,7 +2952,7 @@ EndProcedure
 
 
 
-; Ändert die Attribute der angegebenen Registerkarte.
+; Ã„ndert die Attribute der angegebenen Registerkarte.
 Procedure SetTabBarGadgetItemAttribute(Gadget.i, Tab.i, Attribute.i, Value.i)
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -2974,7 +2974,7 @@ EndProcedure
 
 
 
-; Gibt den Status der angegebenen Registerkarte zurück.
+; Gibt den Status der angegebenen Registerkarte zurÃ¼ck.
 Procedure.i GetTabBarGadgetItemAttribute(Gadget.i, Tab.i, Attribute.i)
 	
 	Protected *Item.TabBarGadgetItem = TabBarGadgetItemID(Gadget, Tab)
@@ -2995,7 +2995,7 @@ EndProcedure
 
 
 
-; Ändert den Datenwert der angegebenen Registerkarte.
+; Ã„ndert den Datenwert der angegebenen Registerkarte.
 Procedure SetTabBarGadgetItemData(Gadget.i, Tab.i, DataValue.i) ; Code OK, Hilfe OK
 	
 	Protected *Item.TabBarGadgetItem = TabBarGadgetItemID(Gadget, Tab)
@@ -3008,7 +3008,7 @@ EndProcedure
 
 
 
-; Gibt den Datenwert der angegebenen Registerkarte zurück.
+; Gibt den Datenwert der angegebenen Registerkarte zurÃ¼ck.
 Procedure.i GetTabBarGadgetItemData(Gadget.i, Tab.i) ; Code OK, Hilfe OK
 	
 	Protected *Item.TabBarGadgetItem = TabBarGadgetItemID(Gadget, Tab)
@@ -3021,7 +3021,7 @@ EndProcedure
 
 
 
-; Ändert die Farbe der angegebenen Registerkarte.
+; Ã„ndert die Farbe der angegebenen Registerkarte.
 Procedure SetTabBarGadgetItemColor(Gadget.i, Tab.i, Type.i, Color.i) ; Code OK, Hilfe OK
 	
 	Protected *Item.TabBarGadgetItem = TabBarGadgetItemID(Gadget, Tab)
@@ -3046,7 +3046,7 @@ EndProcedure
 
 
 
-; Gibt die Farbe der angegebenen Registerkarte zurück.
+; Gibt die Farbe der angegebenen Registerkarte zurÃ¼ck.
 Procedure.i GetTabBarGadgetItemColor(Gadget.i, Tab.i, Type.i) ; Code OK, Hilfe OK
 	
 	Protected *Item.TabBarGadgetItem = TabBarGadgetItemID(Gadget, Tab)
@@ -3064,7 +3064,7 @@ EndProcedure
 
 
 
-; Ändert das Icon der angegebenen Registerkarte.
+; Ã„ndert das Icon der angegebenen Registerkarte.
 Procedure SetTabBarGadgetItemImage(Gadget.i, Tab.i, ImageID.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -3079,7 +3079,7 @@ EndProcedure
 
 
 
-; Ändert die Position der angegebenen Registerkarte (die Registerkarte wird also verschoben).
+; Ã„ndert die Position der angegebenen Registerkarte (die Registerkarte wird also verschoben).
 Procedure SetTabBarGadgetItemPosition(Gadget.i, Tab.i, Position.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -3103,7 +3103,7 @@ EndProcedure
 
 
 
-; Gibt die Position der angegebenen Registerkarte zurück.
+; Gibt die Position der angegebenen Registerkarte zurÃ¼ck.
 Procedure GetTabBarGadgetItemPosition(Gadget.i, Tab.i) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -3141,7 +3141,7 @@ EndProcedure
 
 
 
-; Ändert den Status der angegebenen Registerkarte.
+; Ã„ndert den Status der angegebenen Registerkarte.
 Procedure SetTabBarGadgetItemState(Gadget.i, Tab.i, State.i, Mask.i=#TabBarGadget_Disabled|#TabBarGadget_Selected|#TabBarGadget_Checked) ; Code OK, Hilfe OK
 	
 	Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
@@ -3168,7 +3168,7 @@ EndProcedure
 
 
 
-; Gibt den Status der angegebenen Registerkarte zurück.
+; Gibt den Status der angegebenen Registerkarte zurÃ¼ck.
 Procedure.i GetTabBarGadgetItemState(Gadget.i, Tab.i) ; Code OK, Hilfe OK
 	
 	Protected *Item.TabBarGadgetItem = TabBarGadgetItemID(Gadget, Tab)
@@ -3181,7 +3181,7 @@ EndProcedure
 
 
 
-; Ändert den Text der angegebenen Registerkarte.
+; Ã„ndert den Text der angegebenen Registerkarte.
 Procedure SetTabBarGadgetItemText(Gadget.i, Tab.i, Text.s) ; Code OK, Hilfe OK
 	
 	Protected *Item.TabBarGadgetItem = TabBarGadgetItemID(Gadget, Tab)
@@ -3196,7 +3196,7 @@ EndProcedure
 
 
 
-; Gibt den Text der angegebenen Registerkarte zurück.
+; Gibt den Text der angegebenen Registerkarte zurÃ¼ck.
 Procedure.s GetTabBarGadgetItemText(Gadget.i, Tab.i) ; Code OK, Hilfe OK
 	
 	Protected *Item.TabBarGadgetItem = TabBarGadgetItemID(Gadget, Tab)

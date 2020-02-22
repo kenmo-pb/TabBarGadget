@@ -1,4 +1,4 @@
-XIncludeFile "TabBarGadget.pbi"
+﻿XIncludeFile "TabBarGadget.pbi"
 
 Enumeration
 	#Window

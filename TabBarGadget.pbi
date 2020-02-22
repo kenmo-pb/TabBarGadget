@@ -3209,9 +3209,3 @@ EndProcedure
 
 
 
-; IDE Options = PureBasic 5.70 LTS (Windows - x64)
-; CursorPosition = 3
-; Folding = --8D9-n4fv0--f8XhfQCAr
-; EnableXP
-; EnableCompileCount = 41
-; EnableBuildCount = 0

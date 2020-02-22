@@ -219,7 +219,7 @@ Structure TabBarGadget
   FontID.i                          ; Schrift
   DataValue.i                       ; Benutzer-Daten-Wert
   Attributes.i                      ; Attribute
-  List		Item.TabBarGadgetItem()   ; Registerkarten
+  List    Item.TabBarGadgetItem()   ; Registerkarten
   NewTabItem.TabBarGadgetItem       ; "Neu"-Registerkarte
   *SelectedItem.TabBarGadgetItem    ; ausgewählte Registerkarte
   *MoveItem.TabBarGadgetItem        ; bewegte Registerkarte
@@ -1295,20 +1295,20 @@ Procedure TabBarGadget_DrawItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetIt
         GradientColor(1.0, TabBarGadget_ColorMinus(Color, $FF101010))
     EndSelect
     
-    ; 		; andere ausgewählte Nachbarn
-    ; 		If *Item <> *TabBarGadget\NewTabItem And *Item\Selected
-    ; 			PushListPosition(*TabBarGadget\Item())
-    ; 			ChangeCurrentElement(*TabBarGadget\Item(), *Item)
-    ; 			If NextElement(*TabBarGadget\Item()) And *TabBarGadget\Item()\Selected
-    ; 				LayoutWidth - \Margin/2
-    ; 			EndIf
-    ; 			ChangeCurrentElement(*TabBarGadget\Item(), *Item)
-    ; 			If PreviousElement(*TabBarGadget\Item()) And *TabBarGadget\Item()\Selected
-    ; 				LayoutX     + \Margin/2
-    ; 				LayoutWidth - \Margin/2
-    ; 			EndIf
-    ; 			PopListPosition(*TabBarGadget\Item())
-    ; 		EndIf
+    ;     ; andere ausgewählte Nachbarn
+    ;     If *Item <> *TabBarGadget\NewTabItem And *Item\Selected
+    ;       PushListPosition(*TabBarGadget\Item())
+    ;       ChangeCurrentElement(*TabBarGadget\Item(), *Item)
+    ;       If NextElement(*TabBarGadget\Item()) And *TabBarGadget\Item()\Selected
+    ;         LayoutWidth - \Margin/2
+    ;       EndIf
+    ;       ChangeCurrentElement(*TabBarGadget\Item(), *Item)
+    ;       If PreviousElement(*TabBarGadget\Item()) And *TabBarGadget\Item()\Selected
+    ;         LayoutX     + \Margin/2
+    ;         LayoutWidth - \Margin/2
+    ;       EndIf
+    ;       PopListPosition(*TabBarGadget\Item())
+    ;     EndIf
     
     ; Registerkarte zeichnen
     DrawingMode(#PB_2DDrawing_Transparent|#PB_2DDrawing_AlphaBlend|#PB_2DDrawing_Gradient)

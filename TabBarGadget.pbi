@@ -2541,12 +2541,13 @@ Procedure FreeTabBarGadget(Gadget.i) ; Code OK, Hilfe OK
   
   Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
   
+  UnbindGadgetEvent(*TabBarGadget\Number, @TabBarGadget_Callback())
+  FreeGadget(Gadget)
   ForEach *TabBarGadget\Item()
     TabBarGadget_ClearItem(*TabBarGadget, *TabBarGadget\Item())
   Next
   ClearStructure(*TabBarGadget, TabBarGadget)
   FreeMemory(*TabBarGadget)
-  FreeGadget(Gadget)
   
 EndProcedure
 

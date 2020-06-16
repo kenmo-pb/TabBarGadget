@@ -3054,9 +3054,9 @@ Procedure.i GetTabBarGadgetItemColor(Gadget.i, Tab.i, Type.i) ; Code OK, Hilfe O
   If *Item
     Select Type
       Case #PB_Gadget_FrontColor
-        ProcedureReturn *Item\Color\Text
+        ProcedureReturn *Item\Color\Text & $FFFFFF
       Case #PB_Gadget_BackColor
-        ProcedureReturn *Item\Color\Background
+        ProcedureReturn *Item\Color\Background & $FFFFFF
     EndSelect
   EndIf
   

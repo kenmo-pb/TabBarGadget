@@ -2876,6 +2876,9 @@ Procedure SetTabBarGadgetFont(Gadget.i, FontID.i) ; Code OK, Hilfe OK
     *TabBarGadget\FontID = FontID
   EndIf
   
+  ; Reset to 0 to force a new size calculation
+  *TabBarGadget\TabSize = 0
+  
   TabBarGadget_PostUpdate(*TabBarGadget)
   
 EndProcedure

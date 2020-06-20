@@ -119,6 +119,10 @@ EndEnumeration
 #TabBarGadgetItem_ActiveFace  = 2
 #TabBarGadgetItem_MoveFace    = 3
 
+; Compile switch for extra safety - could affect callback performance!
+CompilerIf Not Defined(TabBarGadget_EnableCallbackGadgetCheck, #PB_Constant)
+  #TabBarGadget_EnableCallbackGadgetCheck = #False
+CompilerEndIf
 
 
 
@@ -2512,7 +2516,16 @@ EndProcedure
 ; Callback für BindGadgetEvent()
 Procedure TabBarGadget_Callback() ; Code OK
   
+  CompilerIf (#TabBarGadget_EnableCallbackGadgetCheck)
+    If Not IsGadget(EventGadget())
+      ProcedureReturn
+    EndIf
+  CompilerEndIf
+  
   Protected *TabBarGadget.TabBarGadget = GetGadgetData(EventGadget())
+  If *TabBarGadget = #Null
+    ProcedureReturn
+  EndIf
   
   If EventType() >= #PB_EventType_FirstCustomValue
     *TabBarGadget\EventTab = EventData()
@@ -2580,7 +2593,12 @@ EndProcedure
 ; Gibt das angegebene TabBarGadget wieder frei.
 Procedure FreeTabBarGadget(Gadget.i) ; Code OK, Hilfe OK
   
+  If Not IsGadget(Gadget)
+    ProcedureReturn
+  EndIf
+  
   Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
+  SetGadgetData(Gadget, #Null)
   
   UnbindGadgetEvent(*TabBarGadget\Number, @TabBarGadget_Callback())
   FreeGadget(Gadget)

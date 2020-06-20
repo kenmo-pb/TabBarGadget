@@ -2441,7 +2441,9 @@ Procedure TabBarGadget_Timer(Null.i) ; Code OK
         Repeat
           LockMutex(\Mutex)
           If \TabBarGadget
-            PostEvent(#PB_Event_Gadget, \TabBarGadget\Window, \TabBarGadget\Number, #TabBarGadget_EventType_Pushed, \Type)
+            CompilerIf (#PB_Compiler_OS <> #PB_OS_MacOS) Or (#PB_Compiler_Version >= 560)
+              PostEvent(#PB_Event_Gadget, \TabBarGadget\Window, \TabBarGadget\Number, #TabBarGadget_EventType_Pushed, \Type)
+            CompilerEndIf
             UnlockMutex(\Mutex)
           Else
             UnlockMutex(\Mutex)

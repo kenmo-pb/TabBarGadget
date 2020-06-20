@@ -24,9 +24,9 @@
 
 
 
-
-EnableExplicit
-
+CompilerIf #PB_Compiler_IsMainFile
+  EnableExplicit
+CompilerEndIf
 
 
 

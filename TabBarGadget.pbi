@@ -468,6 +468,37 @@ EndProcedure
 ; Entfernt die Registerkarte und aktualisiert die Select-Hierarchie
 Procedure TabBarGadget_RemoveItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetItem) ; Code OK
   
+  If *Item = #Null
+    ProcedureReturn
+  EndIf
+  
+  With *TabBarGadget
+    If (\HoverItem = *Item)
+      \HoverItem = #Null
+    EndIf
+    If (\HoverCheck = *Item)
+      \HoverCheck = #Null
+    EndIf
+    If (\HoverClose = *Item)
+      \HoverClose = #Null
+    EndIf
+    If (\LockedItem = *Item)
+      \LockedItem = #Null
+    EndIf
+    If (\LockedCheck = *Item)
+      \LockedCheck = #Null
+    EndIf
+    If (\LockedClose = *Item)
+      \LockedClose = #Null
+    EndIf
+    If (\MoveItem = *Item)
+      \MoveItem = #Null
+    EndIf
+    If (\ReadyToMoveItem = *Item)
+      \ReadyToMoveItem = #Null
+    EndIf
+  EndWith
+  
   TabBarGadget_ClearItem(*TabBarGadget, *Item)
   If *TabBarGadget\SelectedItem
     TabBarGadget_UnselectItem(*TabBarGadget, *Item)

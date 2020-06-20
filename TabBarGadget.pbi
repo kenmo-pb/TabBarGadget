@@ -926,10 +926,11 @@ Procedure TabBarGadget_ReplaceImage(*TabBarGadget.TabBarGadget, *Item.TabBarGadg
     CompilerElse
       *Item\Image = CreateImage(#PB_Any, TabBarGadgetInclude\ImageSize, TabBarGadgetInclude\ImageSize, 32|#PB_Image_Transparent)
     CompilerEndIf
-    StartDrawing(ImageOutput(*Item\Image))
-    DrawingMode(#PB_2DDrawing_AlphaBlend)
-    DrawImage(NewImageID, 0, 0, TabBarGadgetInclude\ImageSize, TabBarGadgetInclude\ImageSize)
-    StopDrawing()
+    If StartDrawing(ImageOutput(*Item\Image))
+      DrawingMode(#PB_2DDrawing_AlphaBlend)
+      DrawImage(NewImageID, 0, 0, TabBarGadgetInclude\ImageSize, TabBarGadgetInclude\ImageSize)
+      StopDrawing()
+    EndIf
     TabBarGadget_RotateImage(*TabBarGadget, *Item)
   EndIf
   

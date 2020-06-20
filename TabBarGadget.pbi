@@ -103,6 +103,11 @@ EndEnumeration
 
 #TabBarGadget_DefaultHeight     = 1
 
+; Default colors
+#TabBarGadgetColor_TabBarDefault = $D0D0D0
+#TabBarGadgetColor_BorderDefault = $808080
+#TabBarGadgetColor_FaceDefault   = $D0D0D0
+#TabBarGadgetColor_TextDefault   = $000000
 
 
 ; Interne Konstanten
@@ -318,10 +323,10 @@ With TabBarGadgetInclude
       \FaceColor     = $FF<<24 | GetSysColor_(#COLOR_BTNFACE)
       \TextColor     = $FF<<24 | GetSysColor_(#COLOR_BTNTEXT)
     CompilerDefault
-      \TabBarColor   = $FFD0D0D0
-      \BorderColor   = $FF808080
-      \FaceColor     = $FFD0D0D0
-      \TextColor     = $FF000000
+      \TabBarColor   = $FF<<24 | #TabBarGadgetColor_TabBarDefault
+      \BorderColor   = $FF<<24 | #TabBarGadgetColor_BorderDefault
+      \FaceColor     = $FF<<24 | #TabBarGadgetColor_FaceDefault
+      \TextColor     = $FF<<24 | #TabBarGadgetColor_TextDefault
   CompilerEndSelect
   \HoverColorPlus               = $FF101010
   \ActivColorPlus               = $FF101010

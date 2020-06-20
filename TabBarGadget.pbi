@@ -2533,6 +2533,8 @@ Procedure TabBarGadget_Callback() ; Code OK
           TabBarGadget_Update(*TabBarGadget)
           TabBarGadget_Draw(*TabBarGadget)
           StopDrawing()
+        Else
+          *TabBarGadget\UpdatePosted = #False
         EndIf
     EndSelect
   Else

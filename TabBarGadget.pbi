@@ -63,6 +63,11 @@ Enumeration
   #TabBarGadget_TabRounding          = 1<<29
 EndEnumeration
 
+; Global attributes for all TabBarGadgets
+Enumeration
+  #TabBarGadgetGlobal_WheelDirection = 1 << 0
+EndEnumeration
+
 ; Ereignisse von TabBarGadgetEvent
 Enumeration #PB_EventType_FirstCustomValue
   #TabBarGadget_EventType_Pushed
@@ -3013,6 +3018,22 @@ Procedure.s GetTabBarGadgetText(Gadget.i) ; Code OK, Hilfe OK
   If *TabBarGadget\SelectedItem
     ProcedureReturn *TabBarGadget\SelectedItem\Text
   EndIf
+  
+EndProcedure
+
+
+
+; Set attributes global to all TabBarGadgets
+Procedure SetTabBarGadgetGlobalAttribute(Attribute.i, Value.i)
+  
+  Select Attribute
+    Case #TabBarGadgetGlobal_WheelDirection
+      If Value > 0
+        TabBarGadgetInclude\WheelDirection = 1
+      Else
+        TabBarGadgetInclude\WheelDirection = -1
+      EndIf
+  EndSelect
   
 EndProcedure
 

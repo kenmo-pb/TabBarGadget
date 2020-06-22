@@ -303,6 +303,7 @@ Structure TabBarGadgetInclude
   EnableDoubleClickForNewTab.i    ; Doppelklick ins "Leere" erzeigt ein Ereignis
   EnableMiddleClickForCloseTab.i  ; Mittelklick auf eine Karte erzeigt ein Ereignis
   Timer.TabBarGadget_Timer        ; Timer für das kontinuierliche Scrollen
+  DefaultFontID.i                 ; System default font ID
 EndStructure
 
 
@@ -2627,6 +2628,15 @@ Procedure.i TabBarGadget(Gadget.i, X.i, Y.i, Width.i, Height.i, Attributes.i, Wi
   EndIf
   SetGadgetData(Gadget, *TabBarGadget)
   
+  CompilerSelect #PB_Compiler_OS
+    CompilerCase #PB_OS_Windows
+      TabBarGadgetInclude\DefaultFontID = GetGadgetFont(#PB_Default)
+    CompilerDefault
+      DummyGadget = TextGadget(#PB_Any, 0, 0, 10, 10, "Dummy")
+      TabBarGadgetInclude\DefaultFontID = GetGadgetFont(DummyGadget)
+      FreeGadget(DummyGadget)
+  CompilerEndSelect
+  
   With *TabBarGadget
     \Attributes                  = Attributes
     \Number                      = Gadget
@@ -2638,14 +2648,7 @@ Procedure.i TabBarGadget(Gadget.i, X.i, Y.i, Width.i, Height.i, Attributes.i, Wi
     \MaxTabLength                = TabBarGadgetInclude\MaxTabLength
     \NormalTabLength             = TabBarGadgetInclude\NormalTabLength
     \TabTextAlignment            = TabBarGadgetInclude\TabTextAlignment
-    CompilerSelect #PB_Compiler_OS
-      CompilerCase #PB_OS_Windows
-        \FontID                  = GetGadgetFont(#PB_Default)
-      CompilerDefault
-        DummyGadget = TextGadget(#PB_Any, 0, 0, 10, 10, "Dummy")
-        \FontID                  = GetGadgetFont(DummyGadget)
-        FreeGadget(DummyGadget)
-    CompilerEndSelect
+    \FontID                      = TabBarGadgetInclude\DefaultFontID
     \EventTab                    = #TabBarGadgetItem_None
   EndWith
   
@@ -2929,7 +2932,7 @@ Procedure SetTabBarGadgetFont(Gadget.i, FontID.i) ; Code OK, Hilfe OK
   Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
   
   If FontID = #PB_Default
-    *TabBarGadget\FontID = GetGadgetFont(#PB_Default)
+    *TabBarGadget\FontID = TabBarGadgetInclude\DefaultFontID
   Else
     *TabBarGadget\FontID = FontID
   EndIf

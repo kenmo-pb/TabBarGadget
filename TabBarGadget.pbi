@@ -144,6 +144,15 @@ CompilerIf Not Defined(TabBarGadget_EnableCallbackGadgetCheck, #PB_Constant)
   #TabBarGadget_EnableCallbackGadgetCheck = #False
 CompilerEndIf
 
+; Compile switch to use WinAPI for drawing clearer text
+CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+  CompilerIf Not Defined(TabBarGadget_EnableWinAPIText, #PB_Constant)
+    #TabBarGadget_EnableWinAPIText = #True
+  CompilerEndIf
+CompilerElse
+  #TabBarGadget_EnableWinAPIText = #False
+CompilerEndIf
+
 
 
 ;|¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
@@ -284,6 +293,11 @@ Structure TabBarGadget
   Editor.TabBarGadgetEditor         ; Editor für eine Karte
   Layout.TabBarGadgetLayout         ; Layout der Leiste
   UpdatePosted.i                    ; Nach einem PostEvent #True
+  CompilerIf #TabBarGadget_EnableWinAPIText
+    DrawingID.i                     ; Drawing handle for API text drawing
+    PrevFont.i                      ; Store previous font handle to restore
+    DrawRect.RECT                   ; Allocate a RECT struct for WinAPI
+  CompilerEndIf
 EndStructure
 
 ; Timer für das kontinuierliche Scrollen
@@ -399,6 +413,50 @@ EndWith
 ;-  4.1 Private procedures for internal calculations ! Not for use !
 ;¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
+; StartDrawing() wrapper which saves handle for WinAPI drawing
+Procedure.i TabBarGadget_StartDrawing(*TabBarGadget.TabBarGadget)
+  CompilerIf #TabBarGadget_EnableWinAPIText
+    With *TabBarGadget
+      \DrawingID = StartDrawing(CanvasOutput(*TabBarGadget\Number))
+      If \DrawingID
+        \PrevFont = SelectObject_(\DrawingID, \FontID)
+        \DrawRect\right  = OutputWidth()
+        \DrawRect\bottom = OutputHeight()
+        SetBkMode_(\DrawingID, #TRANSPARENT)
+      EndIf
+      ProcedureReturn \DrawingID
+    EndWith
+  CompilerElse
+    ProcedureReturn StartDrawing(CanvasOutput(*TabBarGadget\Number))
+  CompilerEndIf
+EndProcedure
+
+; StopDrawing() wrapper which clears handle for WinAPI drawing
+Procedure.i TabBarGadget_StopDrawing(*TabBarGadget.TabBarGadget)
+  CompilerIf #TabBarGadget_EnableWinAPIText
+    With *TabBarGadget
+      If (\DrawingID)
+        SelectObject_(\DrawingID, \PrevFont)
+        \DrawingID = #Null
+      EndIf
+    EndWith
+  CompilerEndIf
+  StopDrawing()
+EndProcedure
+
+; DrawText() wrapper which uses Windows API if enabled
+Procedure TabBarGadget_DrawText(*TabBarGadget.TabBarGadget, x.i, y.i, Text.s, Color.i)
+  CompilerIf #TabBarGadget_EnableWinAPIText
+    With *TabBarGadget
+      \DrawRect\left = x
+      \DrawRect\top  = y
+      SetTextColor_(\DrawingID, Color & $00FFFFFF)
+      DrawText_(\DrawingID, @Text, -1, @\DrawRect, #DT_NOPREFIX | #DT_SINGLELINE)
+    EndWith
+  CompilerElse
+    DrawText(x, y, Text, Color)
+  CompilerEndIf
+EndProcedure
 
 
 ; Gitb die Adresse (ID) der Registerkarte zurück.
@@ -1414,7 +1472,7 @@ Procedure TabBarGadget_DrawItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetIt
       If *Item\Disabled
         DrawText(*Item\Layout\TextX, *Item\Layout\TextY, *Item\ShortText, *Item\Color\Text&$FFFFFF|$40<<24)
       Else
-        DrawText(*Item\Layout\TextX, *Item\Layout\TextY, *Item\ShortText, *Item\Color\Text)
+        TabBarGadget_DrawText(*TabBarGadget, *Item\Layout\TextX, *Item\Layout\TextY, *Item\ShortText, *Item\Color\Text)
         If *TabBarGadget\Editor\Item = *Item
           DrawingMode(#PB_2DDrawing_AlphaBlend|#PB_2DDrawing_XOr)
           If *TabBarGadget\Editor\Selection < 0
@@ -2260,14 +2318,14 @@ Procedure TabBarGadget_Update(*TabBarGadget.TabBarGadget)
     
     ; Größenänderung des Gadgets
     If Rows <> \Rows And (EventType() >= #PB_EventType_FirstCustomValue Or GetGadgetAttribute(\Number, #PB_Canvas_Buttons) & #PB_Canvas_LeftButton = #False)
-      StopDrawing()
+      TabBarGadget_StopDrawing(*TabBarGadget)
       If \Attributes & #TabBarGadget_Vertical
         ResizeGadget(\Number, #PB_Ignore, #PB_Ignore, Rows*\TabSize+TabBarGadgetInclude\Margin, #PB_Ignore)
       Else
         ResizeGadget(\Number, #PB_Ignore, #PB_Ignore, #PB_Ignore, Rows*\TabSize+TabBarGadgetInclude\Margin)
       EndIf
       PostEvent(#PB_Event_Gadget, \Window, \Number, #TabBarGadget_EventType_Resize, -1)
-      StartDrawing(CanvasOutput(\Number))
+      TabBarGadget_StartDrawing(*TabBarGadget)
       DrawingFont(\FontID)
       \Resized = #True
       \Rows = Rows
@@ -2586,26 +2644,26 @@ Procedure TabBarGadget_Callback() ; Code OK
               *TabBarGadget\Shift + 1
             EndIf
         EndSelect
-        If StartDrawing(CanvasOutput(*TabBarGadget\Number))
+        If TabBarGadget_StartDrawing(*TabBarGadget)
           TabBarGadget_Update(*TabBarGadget)
           TabBarGadget_Draw(*TabBarGadget)
-          StopDrawing()
+          TabBarGadget_StopDrawing(*TabBarGadget)
         EndIf
       Case #TabBarGadget_EventType_Updated
-        If StartDrawing(CanvasOutput(*TabBarGadget\Number))
+        If TabBarGadget_StartDrawing(*TabBarGadget)
           TabBarGadget_Update(*TabBarGadget)
           TabBarGadget_Draw(*TabBarGadget)
-          StopDrawing()
+          TabBarGadget_StopDrawing(*TabBarGadget)
         Else
           *TabBarGadget\UpdatePosted = #False
         EndIf
     EndSelect
   Else
-    If StartDrawing(CanvasOutput(*TabBarGadget\Number))
+    If TabBarGadget_StartDrawing(*TabBarGadget)
       TabBarGadget_Examine(*TabBarGadget)
       TabBarGadget_Update(*TabBarGadget)
       TabBarGadget_Draw(*TabBarGadget)
-      StopDrawing()
+      TabBarGadget_StopDrawing(*TabBarGadget)
     EndIf
   EndIf
   
@@ -2625,10 +2683,10 @@ Procedure UpdateTabBarGadget(Gadget.i) ; Code OK, Hilfe OK
   
   Protected *TabBarGadget.TabBarGadget = GetGadgetData(Gadget)
   
-  If StartDrawing(CanvasOutput(Gadget))
+  If TabBarGadget_StartDrawing(*TabBarGadget)
     TabBarGadget_Update(*TabBarGadget)
     TabBarGadget_Draw(*TabBarGadget)
-    StopDrawing()
+    TabBarGadget_StopDrawing(*TabBarGadget)
   EndIf
   
 EndProcedure

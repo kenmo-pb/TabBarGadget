@@ -65,9 +65,11 @@ EndEnumeration
 
 ; Global attributes for all TabBarGadgets
 Enumeration
-  #TabBarGadgetGlobal_WheelDirection = 1 << 0
-  #TabBarGadgetGlobal_WheelAction    = 1 << 1
-  #TabBarGadgetGlobal_DrawDisabled   = 1 << 2
+  #TabBarGadgetGlobal_WheelDirection   = 1 << 0
+  #TabBarGadgetGlobal_WheelAction      = 1 << 1
+  #TabBarGadgetGlobal_DrawDisabled     = 1 << 2
+  #TabBarGadgetGlobal_MiddleClickClose = 1 << 3
+  #TabBarGadgetGlobal_DoubleClickNew   = 1 << 4
 EndEnumeration
 
 ; Ereignisse von TabBarGadgetEvent
@@ -3073,6 +3075,18 @@ Procedure SetTabBarGadgetGlobalAttribute(Attribute.i, Value.i)
         TabBarGadgetInclude\DrawDisabled = #True
       Else
         TabBarGadgetInclude\DrawDisabled = #False
+      EndIf
+    Case #TabBarGadgetGlobal_MiddleClickClose
+      If Value
+        TabBarGadgetInclude\EnableMiddleClickForCloseTab = #True
+      Else
+        TabBarGadgetInclude\EnableMiddleClickForCloseTab = #False
+      EndIf
+    Case #TabBarGadgetGlobal_DoubleClickNew
+      If Value
+        TabBarGadgetInclude\EnableDoubleClickForNewTab = #True
+      Else
+        TabBarGadgetInclude\EnableDoubleClickForNewTab = #False
       EndIf
   EndSelect
   

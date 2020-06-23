@@ -67,6 +67,7 @@ EndEnumeration
 Enumeration
   #TabBarGadgetGlobal_WheelDirection = 1 << 0
   #TabBarGadgetGlobal_WheelAction    = 1 << 1
+  #TabBarGadgetGlobal_DrawDisabled   = 1 << 2
 EndEnumeration
 
 ; Ereignisse von TabBarGadgetEvent
@@ -318,6 +319,7 @@ Structure TabBarGadgetInclude
   EnableMiddleClickForCloseTab.i  ; Mittelklick auf eine Karte erzeigt ein Ereignis
   Timer.TabBarGadget_Timer        ; Timer für das kontinuierliche Scrollen
   DefaultFontID.i                 ; System default font ID
+  DrawDisabled.i                  ; Disable redraw for batch tab changes
 EndStructure
 
 
@@ -2334,6 +2336,10 @@ EndProcedure
 ; Zeichnet das gesamte TabBarGadget
 Procedure TabBarGadget_Draw(*TabBarGadget.TabBarGadget)
   
+  If TabBarGadgetInclude\DrawDisabled
+    ProcedureReturn
+  EndIf
+  
   Protected X.i, Y.i, Size.i, SelectedItemDrawed.i, MoveItemDrawed.i, Row.i, *LastItem
   
   With *TabBarGadget
@@ -3062,6 +3068,12 @@ Procedure SetTabBarGadgetGlobalAttribute(Attribute.i, Value.i)
       EndIf
     Case #TabBarGadgetGlobal_WheelAction
       TabBarGadgetInclude\WheelAction = Value
+    Case #TabBarGadgetGlobal_DrawDisabled
+      If Value
+        TabBarGadgetInclude\DrawDisabled = #True
+      Else
+        TabBarGadgetInclude\DrawDisabled = #False
+      EndIf
   EndSelect
   
 EndProcedure

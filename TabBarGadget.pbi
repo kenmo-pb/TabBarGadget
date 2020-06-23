@@ -70,6 +70,10 @@ Enumeration
   #TabBarGadgetGlobal_DrawDisabled     = 1 << 2
   #TabBarGadgetGlobal_MiddleClickClose = 1 << 3
   #TabBarGadgetGlobal_DoubleClickNew   = 1 << 4
+  #TabBarGadgetGlobal_TabBarColor      = 1 << 5
+  #TabBarGadgetGlobal_BorderColor      = 1 << 6
+  #TabBarGadgetGlobal_FaceColor        = 1 << 7
+  #TabBarGadgetGlobal_TextColor        = 1 << 8
 EndEnumeration
 
 ; Ereignisse von TabBarGadgetEvent
@@ -3087,6 +3091,30 @@ Procedure SetTabBarGadgetGlobalAttribute(Attribute.i, Value.i)
         TabBarGadgetInclude\EnableDoubleClickForNewTab = #True
       Else
         TabBarGadgetInclude\EnableDoubleClickForNewTab = #False
+      EndIf
+    Case #TabBarGadgetGlobal_TabBarColor
+      If Value = #PB_Default
+        TabBarGadgetInclude\TabBarColor = #TabBarGadgetColor_TabBarDefault
+      Else
+        TabBarGadgetInclude\TabBarColor = Value | ($FF << 24)
+      EndIf
+    Case #TabBarGadgetGlobal_BorderColor
+      If Value = #PB_Default
+        TabBarGadgetInclude\BorderColor = #TabBarGadgetColor_BorderDefault
+      Else
+        TabBarGadgetInclude\BorderColor = Value | ($FF << 24)
+      EndIf
+    Case #TabBarGadgetGlobal_FaceColor
+      If Value = #PB_Default
+        TabBarGadgetInclude\FaceColor = #TabBarGadgetColor_FaceDefault
+      Else
+        TabBarGadgetInclude\FaceColor = Value | ($FF << 24)
+      EndIf
+    Case #TabBarGadgetGlobal_TextColor
+      If Value = #PB_Default
+        TabBarGadgetInclude\TextColor = #TabBarGadgetColor_TextDefault
+      Else
+        TabBarGadgetInclude\TextColor = Value | ($FF << 24)
       EndIf
   EndSelect
   

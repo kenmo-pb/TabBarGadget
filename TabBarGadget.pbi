@@ -66,6 +66,7 @@ EndEnumeration
 ; Global attributes for all TabBarGadgets
 Enumeration
   #TabBarGadgetGlobal_WheelDirection = 1 << 0
+  #TabBarGadgetGlobal_WheelAction    = 1 << 1
 EndEnumeration
 
 ; Ereignisse von TabBarGadgetEvent
@@ -104,6 +105,13 @@ EndEnumeration
 Enumeration
   #TabBarGadgetUpdate_Directly  = 0
   #TabBarGadgetUpdate_PostEvent = 1
+EndEnumeration
+
+; MouseWheel actions
+Enumeration
+  #TabBarGadgetWheelAction_None   = 0
+  #TabBarGadgetWheelAction_Scroll = 1
+  #TabBarGadgetWheelAction_Change = 2
 EndEnumeration
 
 #TabBarGadget_DefaultHeight     = 1
@@ -304,6 +312,7 @@ Structure TabBarGadgetInclude
   NormalTabLength.i               ; [für später]
   FadeOut.i                       ; Länge der Farbausblendung bei einer Navigation
   WheelDirection.i                ; Scrollrichtung bei Mausradbewegung
+  WheelAction.i                   ; Action for MouseWheel events
   RowDirection.i                  ; Reihenfolge der Zeilen
   EnableDoubleClickForNewTab.i    ; Doppelklick ins "Leere" erzeigt ein Ereignis
   EnableMiddleClickForCloseTab.i  ; Mittelklick auf eine Karte erzeigt ein Ereignis
@@ -358,6 +367,7 @@ With TabBarGadgetInclude
   \NormalTabLength              = 150
   \FadeOut                      = 32 ; Length of fade out to the navi
   \WheelDirection               = -1
+  \WheelAction                  = #TabBarGadgetWheelAction_Scroll
   \RowDirection                 = 1 ; not used
   \EnableDoubleClickForNewTab   = #True
   \EnableMiddleClickForCloseTab = #True
@@ -1676,12 +1686,15 @@ Procedure TabBarGadget_Examine(*TabBarGadget.TabBarGadget)
     ; Navigation
     If \Attributes & (#TabBarGadget_PreviousArrow|#TabBarGadget_NextArrow)
       
+      ; MouseWheel Scroll Action
       If EventType() = #PB_EventType_MouseWheel
-        \Shift + TabBarGadgetInclude\WheelDirection * GetGadgetAttribute(\Number, #PB_Canvas_WheelDelta)
-        If \Shift < 0
-          \Shift = 0
-        ElseIf \Shift > \LastShift
-          \Shift = \LastShift
+        If TabBarGadgetInclude\WheelAction = #TabBarGadgetWheelAction_Scroll
+          \Shift + TabBarGadgetInclude\WheelDirection * GetGadgetAttribute(\Number, #PB_Canvas_WheelDelta)
+          If \Shift < 0
+            \Shift = 0
+          ElseIf \Shift > \LastShift
+            \Shift = \LastShift
+          EndIf
         EndIf
       EndIf
       
@@ -1721,6 +1734,20 @@ Procedure TabBarGadget_Examine(*TabBarGadget.TabBarGadget)
       EndIf
       UnlockMutex(TabBarGadgetInclude\Timer\Mutex)
       
+    EndIf
+    
+    ; MouseWheel Change Action
+    If EventType() = #PB_EventType_MouseWheel
+      If TabBarGadgetInclude\WheelAction = #TabBarGadgetWheelAction_Change
+        If TabBarGadget_ItemID(*TabBarGadget, #TabBarGadgetItem_Selected)
+          Index = ListIndex(\Item()) + TabBarGadgetInclude\WheelDirection * Sign(GetGadgetAttribute(\Number, #PB_Canvas_WheelDelta))
+          If (Index >= 0) And (Index < ListSize(\Item()))
+            TabBarGadget_SelectItem(*TabBarGadget, TabBarGadget_ItemID(*TabBarGadget, Index))
+            \EventTab = Index
+            PostEvent(#PB_Event_Gadget, \Window, \Number, #TabBarGadget_EventType_Change, \EventTab)
+          EndIf
+        EndIf
+      EndIf
     EndIf
     
     ; Popup-Button
@@ -3033,6 +3060,8 @@ Procedure SetTabBarGadgetGlobalAttribute(Attribute.i, Value.i)
       Else
         TabBarGadgetInclude\WheelDirection = -1
       EndIf
+    Case #TabBarGadgetGlobal_WheelAction
+      TabBarGadgetInclude\WheelAction = Value
   EndSelect
   
 EndProcedure

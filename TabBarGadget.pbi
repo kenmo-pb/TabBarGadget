@@ -1,7 +1,7 @@
 ﻿;|-------------------------------------------------------------------------------------------------
 ;|
 ;|  Title            : TabBarGadget
-;|  Version          : 1.5 Beta 2a (2019-03-25)
+;|  Version          : 'kenmo-mods' fork based off v1.5 Beta 2a
 ;|  Copyright        : UnionBytes
 ;|                     (Martin Guttmann alias STARGÅTE)
 ;|  PureBasic        : 5.20+
@@ -3174,6 +3174,32 @@ Procedure SetTabBarGadgetGlobalAttribute(Attribute.i, Value.i)
       Else
         TabBarGadgetInclude\TextColor = Value | ($FF << 24)
       EndIf
+  EndSelect
+  
+EndProcedure
+
+; Get attributes global to all TabBarGadgets
+Procedure GetTabBarGadgetGlobalAttribute(Attribute.i)
+  
+  Select Attribute
+    Case #TabBarGadgetGlobal_WheelDirection
+      ProcedureReturn TabBarGadgetInclude\WheelDirection
+    Case #TabBarGadgetGlobal_WheelAction
+      ProcedureReturn TabBarGadgetInclude\WheelAction
+    Case #TabBarGadgetGlobal_DrawDisabled
+      ProcedureReturn TabBarGadgetInclude\DrawDisabled
+    Case #TabBarGadgetGlobal_MiddleClickClose
+      ProcedureReturn TabBarGadgetInclude\EnableMiddleClickForCloseTab
+    Case #TabBarGadgetGlobal_DoubleClickNew
+      ProcedureReturn TabBarGadgetInclude\EnableDoubleClickForNewTab
+    Case #TabBarGadgetGlobal_TabBarColor
+      ProcedureReturn TabBarGadgetInclude\TabBarColor & $FFFFFF
+    Case #TabBarGadgetGlobal_BorderColor
+      ProcedureReturn TabBarGadgetInclude\BorderColor & $FFFFFF
+    Case #TabBarGadgetGlobal_FaceColor
+      ProcedureReturn TabBarGadgetInclude\FaceColor & $FFFFFF
+    Case #TabBarGadgetGlobal_TextColor
+      ProcedureReturn TabBarGadgetInclude\TextColor & $FFFFFF
   EndSelect
   
 EndProcedure

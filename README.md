@@ -15,7 +15,15 @@ The TabBarGadget provides draggable, customizable tabs as seen in web browsers a
 
 All credit and copyright belong to Martin Guttmann / STARGÅTE.
 
-More TabBarGadget info:  
-[Webpage](https://www.unionbytes.de/includes/tabbargadget/)  
+## Branches
+
+This repo has three main branches:
+
+- **[master](https://github.com/kenmo-pb/TabBarGadget/tree/master)** — the latest release
+- **[develop](https://github.com/kenmo-pb/TabBarGadget/tree/develop)** — includes changes recommended by the official author in the forum
+- **[kenmo-mods](https://github.com/kenmo-pb/TabBarGadget/tree/kenmo-mods)** — includes new features and changes by [kenmo-pb](https://github.com/kenmo-pb)
+
+## More info:  
+[TabBarGadget Webpage](https://www.unionbytes.de/includes/tabbargadget/)  
 [Documentation](http://help.unionbytes.de/tbg/)  
 [English forum thread](https://www.purebasic.fr/english/viewtopic.php?f=12&t=47588)  

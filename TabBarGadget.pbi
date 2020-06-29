@@ -3152,25 +3152,25 @@ Procedure SetTabBarGadgetGlobalAttribute(Attribute.i, Value.i)
       EndIf
     Case #TabBarGadgetGlobal_TabBarColor
       If Value = #PB_Default
-        TabBarGadgetInclude\TabBarColor = #TabBarGadgetColor_TabBarDefault
+        TabBarGadgetInclude\TabBarColor = #TabBarGadgetColor_TabBarDefault | ($FF << 24)
       Else
         TabBarGadgetInclude\TabBarColor = Value | ($FF << 24)
       EndIf
     Case #TabBarGadgetGlobal_BorderColor
       If Value = #PB_Default
-        TabBarGadgetInclude\BorderColor = #TabBarGadgetColor_BorderDefault
+        TabBarGadgetInclude\BorderColor = #TabBarGadgetColor_BorderDefault | ($FF << 24)
       Else
         TabBarGadgetInclude\BorderColor = Value | ($FF << 24)
       EndIf
     Case #TabBarGadgetGlobal_FaceColor
       If Value = #PB_Default
-        TabBarGadgetInclude\FaceColor = #TabBarGadgetColor_FaceDefault
+        TabBarGadgetInclude\FaceColor = #TabBarGadgetColor_FaceDefault | ($FF << 24)
       Else
         TabBarGadgetInclude\FaceColor = Value | ($FF << 24)
       EndIf
     Case #TabBarGadgetGlobal_TextColor
       If Value = #PB_Default
-        TabBarGadgetInclude\TextColor = #TabBarGadgetColor_TextDefault
+        TabBarGadgetInclude\TextColor = #TabBarGadgetColor_TextDefault | ($FF << 24)
       Else
         TabBarGadgetInclude\TextColor = Value | ($FF << 24)
       EndIf

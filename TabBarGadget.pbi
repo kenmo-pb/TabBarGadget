@@ -3152,28 +3152,48 @@ Procedure SetTabBarGadgetGlobalAttribute(Attribute.i, Value.i)
       EndIf
     Case #TabBarGadgetGlobal_TabBarColor
       If Value = #PB_Default
-        TabBarGadgetInclude\TabBarColor = #TabBarGadgetColor_TabBarDefault | ($FF << 24)
+        CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+          TabBarGadgetInclude\TabBarColor = GetSysColor_(#COLOR_BTNFACE)
+        CompilerElse
+          TabBarGadgetInclude\TabBarColor = #TabBarGadgetColor_TabBarDefault
+        CompilerEndIf
       Else
-        TabBarGadgetInclude\TabBarColor = Value | ($FF << 24)
+        TabBarGadgetInclude\TabBarColor = Value
       EndIf
+      TabBarGadgetInclude\TabBarColor | ($FF << 24)
     Case #TabBarGadgetGlobal_BorderColor
       If Value = #PB_Default
-        TabBarGadgetInclude\BorderColor = #TabBarGadgetColor_BorderDefault | ($FF << 24)
+        CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+          TabBarGadgetInclude\BorderColor = GetSysColor_(#COLOR_3DSHADOW)
+        CompilerElse
+          TabBarGadgetInclude\BorderColor = #TabBarGadgetColor_BorderDefault
+        CompilerEndIf
       Else
-        TabBarGadgetInclude\BorderColor = Value | ($FF << 24)
+        TabBarGadgetInclude\BorderColor = Value
       EndIf
+      TabBarGadgetInclude\BorderColor | ($FF << 24)
     Case #TabBarGadgetGlobal_FaceColor
       If Value = #PB_Default
-        TabBarGadgetInclude\FaceColor = #TabBarGadgetColor_FaceDefault | ($FF << 24)
+        CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+          TabBarGadgetInclude\FaceColor = GetSysColor_(#COLOR_BTNFACE)
+        CompilerElse
+          TabBarGadgetInclude\FaceColor = #TabBarGadgetColor_FaceDefault
+        CompilerEndIf
       Else
-        TabBarGadgetInclude\FaceColor = Value | ($FF << 24)
+        TabBarGadgetInclude\FaceColor = Value
       EndIf
+      TabBarGadgetInclude\FaceColor | ($FF << 24)
     Case #TabBarGadgetGlobal_TextColor
       If Value = #PB_Default
-        TabBarGadgetInclude\TextColor = #TabBarGadgetColor_TextDefault | ($FF << 24)
+        CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+          TabBarGadgetInclude\TextColor = GetSysColor_(#COLOR_BTNTEXT)
+        CompilerElse
+          TabBarGadgetInclude\TextColor = #TabBarGadgetColor_TextDefault
+        CompilerEndIf
       Else
-        TabBarGadgetInclude\TextColor = Value | ($FF << 24)
+        TabBarGadgetInclude\TextColor = Value
       EndIf
+      TabBarGadgetInclude\TextColor | ($FF << 24)
   EndSelect
   
 EndProcedure

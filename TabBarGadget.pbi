@@ -371,17 +371,17 @@ With TabBarGadgetInclude
   CompilerEndSelect
   \HoverColorPlus               = $FF101010
   \ActivColorPlus               = $FF101010
-  \PaddingX                     = 6  ; Space from tab border to text
-  \PaddingY                     = 5  ; Space from tab border to text
-  \Margin                       = 4  ; Space from tab to border
-  \ImageSpace                   = 3  ; Space from image zu text
-  \ImageSize                    = 16
-  \CloseButtonSize              = 13 ; Size of the close cross
-  \CheckBoxSize                 = 10
-  \ArrowSize                    = 5  ; Size of the Arrow in the button in navigation
-  \ArrowWidth                   = 12 ; Width of the Arrow-Button in navigation
-  \ArrowHeight                  = 18 ; Height of the Arrow-Button in navigation
-  \Radius                       = 3  ; Radius of the edge of the tab
+  \PaddingX                     = DesktopScaledX(6)  ; Space from tab border to text
+  \PaddingY                     = DesktopScaledX(5)  ; Space from tab border to text
+  \Margin                       = 4                  ; Space from tab to border
+  \ImageSpace                   = DesktopScaledX(3)  ; Space from image zu text
+  \ImageSize                    = DesktopScaledX(16)
+  \CloseButtonSize              = DesktopScaledX(13) ; Size of the close cross
+  \CheckBoxSize                 = DesktopScaledX(10)
+  \ArrowSize                    = DesktopScaledX(5)  ; Size of the Arrow in the button in navigation
+  \ArrowWidth                   = DesktopScaledX(12) ; Width of the Arrow-Button in navigation
+  \ArrowHeight                  = DesktopScaledY(18) ; Height of the Arrow-Button in navigation
+  \Radius                       = DesktopScaledX(3)  ; Radius of the edge of the tab
   \TabTextAlignment             = -1
   \VerticalTextBugFix           = 1.05
   \MinTabLength                 = 0
@@ -1527,9 +1527,9 @@ Procedure TabBarGadget_DrawItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetIt
         EndIf
       EndIf
       If *Item\Disabled
-        TabBarGadget_DrawCross(*Item\Layout\CrossX+3, *Item\Layout\CrossY+3, \CloseButtonSize-6, *Item\Color\Text&$FFFFFF|$40<<24)
+        TabBarGadget_DrawCross(*Item\Layout\CrossX+DesktopScaledX(3), *Item\Layout\CrossY+DesktopScaledY(3), \CloseButtonSize-DesktopScaledX(6), *Item\Color\Text&$FFFFFF|$40<<24)
       Else
-        TabBarGadget_DrawCross(*Item\Layout\CrossX+3, *Item\Layout\CrossY+3, \CloseButtonSize-6, *Item\Color\Text)
+        TabBarGadget_DrawCross(*Item\Layout\CrossX+DesktopScaledX(3), *Item\Layout\CrossY+DesktopScaledY(3), \CloseButtonSize-DesktopScaledX(6), *Item\Color\Text)
       EndIf
     EndIf
     
@@ -2320,9 +2320,9 @@ Procedure TabBarGadget_Update(*TabBarGadget.TabBarGadget)
     If Rows <> \Rows And (EventType() >= #PB_EventType_FirstCustomValue Or GetGadgetAttribute(\Number, #PB_Canvas_Buttons) & #PB_Canvas_LeftButton = #False)
       TabBarGadget_StopDrawing(*TabBarGadget)
       If \Attributes & #TabBarGadget_Vertical
-        ResizeGadget(\Number, #PB_Ignore, #PB_Ignore, Rows*\TabSize+TabBarGadgetInclude\Margin, #PB_Ignore)
+        ResizeGadget(\Number, #PB_Ignore, #PB_Ignore, DesktopUnscaledX(Rows*\TabSize+TabBarGadgetInclude\Margin), #PB_Ignore)
       Else
-        ResizeGadget(\Number, #PB_Ignore, #PB_Ignore, #PB_Ignore, Rows*\TabSize+TabBarGadgetInclude\Margin)
+        ResizeGadget(\Number, #PB_Ignore, #PB_Ignore, #PB_Ignore, DesktopUnscaledY(Rows*\TabSize+TabBarGadgetInclude\Margin))
       EndIf
       PostEvent(#PB_Event_Gadget, \Window, \Number, #TabBarGadget_EventType_Resize, -1)
       TabBarGadget_StartDrawing(*TabBarGadget)

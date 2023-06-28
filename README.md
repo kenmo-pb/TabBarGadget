@@ -24,6 +24,6 @@ This repo has three main branches:
 - **[kenmo-mods](https://github.com/kenmo-pb/TabBarGadget/tree/kenmo-mods)** — includes new features and changes by [kenmo-pb](https://github.com/kenmo-pb)
 
 ## More info:  
-[TabBarGadget Webpage](https://www.unionbytes.de/includes/tabbargadget/)  
+[TabBarGadget Webpage](https://www.unionbytes.de/libs/tabbargadget/)  
 [Documentation](http://help.unionbytes.de/tbg/)  
 [English forum thread](https://www.purebasic.fr/english/viewtopic.php?f=12&t=47588)  

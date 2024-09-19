@@ -147,10 +147,19 @@ CompilerEndIf
 ; Compile switch to use WinAPI for drawing clearer text
 CompilerIf #PB_Compiler_OS = #PB_OS_Windows
   CompilerIf Not Defined(TabBarGadget_EnableWinAPIText, #PB_Constant)
-    #TabBarGadget_EnableWinAPIText = #True
+    CompilerIf (#PB_Compiler_Version >= 610)
+      #TabBarGadget_EnableWinAPIText = #False ; No longer needed, use #PB_2DDrawing_NativeText on PB 6.10+
+    CompilerElse
+      #TabBarGadget_EnableWinAPIText = #True
+    CompilerEndIf
   CompilerEndIf
 CompilerElse
   #TabBarGadget_EnableWinAPIText = #False
+CompilerEndIf
+
+; Backwards compatibility
+CompilerIf (#PB_Compiler_Version < 610)
+  #PB_2DDrawing_NativeText = 0
 CompilerEndIf
 
 
@@ -414,8 +423,8 @@ EndWith
 ;¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
 ; StartDrawing() wrapper which saves handle for WinAPI drawing
-Procedure.i TabBarGadget_StartDrawing(*TabBarGadget.TabBarGadget)
-  CompilerIf #TabBarGadget_EnableWinAPIText
+CompilerIf #TabBarGadget_EnableWinAPIText
+  Procedure.i TabBarGadget_StartDrawing(*TabBarGadget.TabBarGadget)
     With *TabBarGadget
       \DrawingID = StartDrawing(CanvasOutput(*TabBarGadget\Number))
       If \DrawingID
@@ -426,37 +435,45 @@ Procedure.i TabBarGadget_StartDrawing(*TabBarGadget.TabBarGadget)
       EndIf
       ProcedureReturn \DrawingID
     EndWith
-  CompilerElse
-    ProcedureReturn StartDrawing(CanvasOutput(*TabBarGadget\Number))
-  CompilerEndIf
-EndProcedure
+  EndProcedure
+CompilerElse
+  Macro TabBarGadget_StartDrawing(_TabBarGadgetPtr)
+    StartDrawing(CanvasOutput(_TabBarGadgetPtr\Number))
+  EndMacro
+CompilerEndIf
 
 ; StopDrawing() wrapper which clears handle for WinAPI drawing
-Procedure.i TabBarGadget_StopDrawing(*TabBarGadget.TabBarGadget)
-  CompilerIf #TabBarGadget_EnableWinAPIText
+CompilerIf #TabBarGadget_EnableWinAPIText
+  Procedure TabBarGadget_StopDrawing(*TabBarGadget.TabBarGadget)
     With *TabBarGadget
       If (\DrawingID)
         SelectObject_(\DrawingID, \PrevFont)
         \DrawingID = #Null
+        StopDrawing()
       EndIf
     EndWith
-  CompilerEndIf
-  StopDrawing()
-EndProcedure
+  EndProcedure
+CompilerElse
+  Macro TabBarGadget_StopDrawing(_TabBarGadgetPtr)
+    StopDrawing()
+  EndMacro
+CompilerEndIf
 
 ; DrawText() wrapper which uses Windows API if enabled
-Procedure TabBarGadget_DrawText(*TabBarGadget.TabBarGadget, x.i, y.i, Text.s, Color.i)
-  CompilerIf #TabBarGadget_EnableWinAPIText
+CompilerIf #TabBarGadget_EnableWinAPIText
+  Procedure TabBarGadget_DrawText(*TabBarGadget.TabBarGadget, x.i, y.i, Text.s, Color.i)
     With *TabBarGadget
       \DrawRect\left = x
       \DrawRect\top  = y
       SetTextColor_(\DrawingID, Color & $00FFFFFF)
       DrawText_(\DrawingID, @Text, -1, @\DrawRect, #DT_NOPREFIX | #DT_SINGLELINE)
     EndWith
-  CompilerElse
-    DrawText(x, y, Text, Color)
-  CompilerEndIf
-EndProcedure
+  EndProcedure
+CompilerElse
+  Macro TabBarGadget_DrawText(_TabBarGadgetPtr, _x, _y, _Text, _Color)
+    DrawText(_x, _y, _Text, _Color)
+  EndMacro
+CompilerEndIf
 
 
 ; Gitb die Adresse (ID) der Registerkarte zurück.
@@ -1442,7 +1459,11 @@ Procedure TabBarGadget_DrawItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetIt
     Else
       RoundBox(*Item\Layout\X+LayoutX, *Item\Layout\Y+LayoutY, *Item\Layout\Width+LayoutWidth, *Item\Layout\Height+LayoutHeight, *TabBarGadget\Radius, *TabBarGadget\Radius, \BorderColor)
     EndIf
-    DrawingMode(#PB_2DDrawing_Transparent|#PB_2DDrawing_AlphaBlend)
+    If (*Item\Disabled Or (#PB_2DDrawing_NativeText = 0))
+      DrawingMode(#PB_2DDrawing_Transparent|#PB_2DDrawing_AlphaBlend)
+    Else
+      DrawingMode(#PB_2DDrawing_Transparent|#PB_2DDrawing_AlphaBlend|#PB_2DDrawing_NativeText)
+    EndIf
     
     If *TabBarGadget\Attributes & #TabBarGadget_Vertical
       Angle = 90 + 180*Bool(*TabBarGadget\Attributes&#TabBarGadget_MirroredTabs)
@@ -1470,6 +1491,7 @@ Procedure TabBarGadget_DrawItem(*TabBarGadget.TabBarGadget, *Item.TabBarGadgetIt
         EndIf
       EndIf
       If *Item\Disabled
+        ; Use normal DrawText() here because WinAPI / NativeDrawing doesn't handle alpha transparency
         DrawText(*Item\Layout\TextX, *Item\Layout\TextY, *Item\ShortText, *Item\Color\Text&$FFFFFF|$40<<24)
       Else
         TabBarGadget_DrawText(*TabBarGadget, *Item\Layout\TextX, *Item\Layout\TextY, *Item\ShortText, *Item\Color\Text)
